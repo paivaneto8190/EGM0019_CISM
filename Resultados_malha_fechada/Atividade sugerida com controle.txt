@@ -1,0 +1,12 @@
+-> Para o controlador apenas com ação proporcional integral
+	-> Testar diferentes valores de ganho
+	1- Kp = 0.6 | Ki = 0.001
+
+
+
+
+
+
+
+
+	-> Para o Kp foi encontrado um valor de Kp = 0.6 como ganho mínimo para que o motor conseguisse vencer a inércia e rotacionar em ambos os sentidos

@@ -1,0 +1,14 @@
+Atividade sugerida sem controle PI:
+-> RPM mínimo e máximo (RPM)
+	-> Mínimo: 11
+	-> Máximo:171
+-> Zona morta (Valor de PWM necessário para mover o motor):
+	-> Zona morta: 0 a 79  (aproximadamente, no sentido horário) com velocidade de -116 RPM
+	-> Zona morta> 0 a 96 (aproximadamente, sentido anti-horário) com velocidade de 130 RPM
+	Vale salientar que o motor funciona para valores mais baixos de PWM, mas para inicialmente vencer o torque e começar a se movimentar, é necessário um PWM >= 84
+-> Tempo necessário para a realização dos cálculos e exibição dos dados:
+	-> No começo do experimento o tempo vai se estabilizando, visto que ao ligar o arduino, boa parte do tempo que é vista é para fazer o setup e preparação
+	-> Dessa forma, foi notado que o tempo total para cálculo e exibição dos dados foi de aproximadamente 0,1 segundos, dado que a cada uma certa quantidade de amostras, 
+	-> esse tempo tende a variar levemente na casa dos milissegundos.
+-> Validação da resolução do encoder
+-> Estabilidade das medições
