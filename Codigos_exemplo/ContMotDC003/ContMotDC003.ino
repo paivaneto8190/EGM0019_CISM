@@ -53,8 +53,8 @@ void setup(){
 }
    
 void loop() {
-  static float Kp = 0.1;                                // Determina o valor do ganho proporcional (Kp)
-  static float Ki = 0.005;                              // Determina o valor do ganho integrativo (Ki)
+  static float Kp = 2.0;                                // Determina o valor do ganho proporcional (Kp)
+  static float Ki = 0;                              // Determina o valor do ganho integrativo (Ki)
   static float acaoP = 0;                               // Porção do sinal de controle proporcional ao erro
   static float acaoI = 0;                               // Porção do s. de controle prop. à integral do erro
   static float controle = acaoP + acaoI;                // Calcula o Sinal de Controle (a partir das ações)

@@ -33,7 +33,7 @@ const int periodo = 100;                        // Periodo de tempo entre mediç
 volatile long pulsosCanalA = 0;                 // Contador de pulsos TOTAIS do Canal A do Encoder 
 volatile long pulsosPorPeriodo = 0;             // Contador de pulsos POR PERÍODO do Canal A do Encoder 
 volatile static unsigned long ultimoTempo = 0;  // Variável usada para testar se o período foi atingido
-long pulsosPorPeriodoAux = 0;
+float pulsosPorPeriodoAux = 0;
 //unsigned long tempoExibeDados1 = 0;
 //unsigned long tempoFazCalculo1 = 0;
 //unsigned long tempoFazCalculo2 = 0;
@@ -59,7 +59,7 @@ void loop() {
     //tempoFazCalculo1 = millis();
     float theta = pulsosCanalA / pulsosPorVolta * 360;  // Calcula a posição angular (Theta) em graus
     float omega = ((pulsosPorPeriodo / pulsosPorVolta) * (60000 / periodo)); // Calcula a velocidade angular
-    pulsosPorPeriodoAux = pulsosPorPeriodo;
+    pulsosPorPeriodoAux += pulsosPorPeriodo;
     pulsosPorPeriodo = 0;                               // Reinicializa o número de pulsos por período
     //tempoFazCalculo2 = millis();
     //tempoFazCalculo2 = tempoFazCalculo2 - tempoFazCalculo1;
@@ -93,7 +93,7 @@ void atualizaEncoderA() {                               // ISR para contar os pu
     pulsosPorPeriodo--; }                               // Decrementa o contador de pulsos por periodo
 }
 
-void mostraDadosMotor(int op,float theta,float omega, float PWM, int valPot, long pulsosPorPeriodo) { // Função para apresentação de informaçcões sobre o Motor
+void mostraDadosMotor(int op,float theta,float omega, float PWM, int valPot, float pulsosPorPeriodo) { // Função para apresentação de informaçcões sobre o Motor
   switch (op) {                                         // Verifica a opção escolhida
     case 1:                                             // Se foi escolhida a opção 1,
     Serial.print("Tempo: ");                            // Imprime mensagem no Monitor Serial
@@ -136,7 +136,7 @@ void mostraDadosMotor(int op,float theta,float omega, float PWM, int valPot, lon
     Serial.print("\t");
     Serial.print("PWM: ");
     Serial.print(PWM);
-    Serial.print("\t Pulsos por periodo: ");
+    Serial.print("\t Pulsos totais: ");
     Serial.print(pulsosPorPeriodo);
     Serial.print("\t");
     Serial.print("Res: ");
