@@ -33,7 +33,7 @@ const byte canalBPin = 4;                       // Usar pino digital 4 p/ Canal 
 const byte canalAPin = 3;                       // Usar pino digital 3 (c/Interrupção) p/ Canal A do Encoder
 volatile bool estadoEnablePtH = 1;              // Variável usada para habilitar a Ponte H
 const float pulsosPorVolta = 341.2;             // Número de Pulso que o encoder dá em uma volta (resolução)
-const int periodo = 100;                       // Periodo de tempo entre medições (em milissegundos)
+const int periodo = 1000;                       // Periodo de tempo entre medições (em milissegundos)
 volatile long pulsosCanalA = 0;                 // Contador de pulsos TOTAIS do Canal A do Encoder 
 volatile long pulsosPorPeriodo = 0;             // Contador de pulsos POR PERÍODO do Canal A do Encoder 
 volatile static unsigned long ultimoTempo = 0;  // Variável usada para testar se o período foi atingido
@@ -58,8 +58,8 @@ void setup(){
    
 void loop() {
   static float Kp = 0.6;                                // Determina o valor do ganho proporcional (Kp)
-  static float Ki = 0.7;                              // Determina o valor do ganho integrativo (Ki)
-  static float Kd = 0;                                  // Determinar o valor do ganho derivativo (Kd)
+  static float Ki = 0.001;                              // Determina o valor do ganho integrativo (Ki)
+  static float Kd = 0.8;                                  // Determinar o valor do ganho derivativo (Kd)
   static float acaoP = 0;                               // Porção do sinal de controle proporcional ao erro
   static float acaoI = 0;                               // Porção do s. de controle prop. à integral do erro
   static float acaoD = 0;                               // Porcao do s. de controle prop. a derivada do erro
