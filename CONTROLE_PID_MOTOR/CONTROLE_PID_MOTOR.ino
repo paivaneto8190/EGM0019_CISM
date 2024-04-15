@@ -57,8 +57,8 @@ void setup(){
 }
    
 void loop() {
-  static float Kp = 0.2;                                // Determina o valor do ganho proporcional (Kp)
-  static float Ki = 0.005;                              // Determina o valor do ganho integrativo (Ki)
+  static float Kp = 0.6;                                // Determina o valor do ganho proporcional (Kp)
+  static float Ki = 0.7;                              // Determina o valor do ganho integrativo (Ki)
   static float Kd = 0;                                  // Determinar o valor do ganho derivativo (Kd)
   static float acaoP = 0;                               // Porção do sinal de controle proporcional ao erro
   static float acaoI = 0;                               // Porção do s. de controle prop. à integral do erro
@@ -74,11 +74,11 @@ void loop() {
     float erro = sp - omega;                            // Calcula o erro entre o SP e a PV
     acaoP = Kp * erro;                                  // Calcula a ação Proporcional
     acaoI += Ki * erro * periodo;                       // Calcula a ação Integrativa
-    acaoD = Kd * (erro  - erro_prev)/periodo;
+    acaoD = Kd * ((erro  - erro_prev)/periodo);
     erro_prev = erro;
     pulsosPorPeriodo = 0;                               // Reinicializa o número de pulsos por período
     attachInterrupt(digitalPinToInterrupt(canalAPin), atualizaEncoderA, FALLING); // Reabilita interrupção
-    mostraDadosMotor(5, theta, omega, sp, erro, controle); // Chama função para exibição dos dados calculados
+    mostraDadosMotor(5, theta, omega, sp, erro, controle, acaoP, acaoI, acaoD); // Chama função para exibição dos dados calculados
   }
   controle = acaoP + acaoI + acaoD;                     // Calcula o Sinal de Controle (a partir das ações)
   int PWM = min(abs(controle), 255);                    // Calcula o PWM entre 0 e 255, saturando o controle
@@ -87,11 +87,11 @@ void loop() {
 
 void acionaMotor(float controle, int PWM) {             // Função que comanda a Ponte H, p/ acionar o Motor
   if (controle >= 0) {                                  // SE o controle for maior ou igual a 0
-    digitalWrite(in1PtHPin, LOW);                       // ENTÃO envia um nivel ALTO para a entrada 1,
-    digitalWrite(in2PtHPin, HIGH);                      // Envia um nivel BAIXO para a entrada 2,
+    digitalWrite(in1PtHPin, HIGH);                       // ENTÃO envia um nivel ALTO para a entrada 1,
+    digitalWrite(in2PtHPin, LOW);                      // Envia um nivel BAIXO para a entrada 2,
   } else {                                              // SENÃO (variável controle < 0)
-    digitalWrite(in1PtHPin, HIGH);                      // ENTÃO envia um nivel BAIXO para a entrada 1,
-    digitalWrite(in2PtHPin, LOW);                       // Envia um nivel ALTO para a entrada 2,
+    digitalWrite(in1PtHPin, LOW);                      // ENTÃO envia um nivel BAIXO para a entrada 1,
+    digitalWrite(in2PtHPin, HIGH);                       // Envia um nivel ALTO para a entrada 2,
   }                                                     // Seja qual for o sentido de rotação,
   analogWrite(enablePtHPin, PWM);                       // Envia o valor de PWM para o enable da Ponte H 
 }
@@ -105,7 +105,7 @@ void atualizaEncoderA() {                               // ISR para contar os pu
     pulsosPorPeriodo--; }                               // Decrementa o contador de pulsos por periodo
 }
 
-void mostraDadosMotor(int op, float theta, float omega, int sp, float erro, float controle) 
+void mostraDadosMotor(int op, float theta, float omega, int sp, float erro, float controle, float acaoP, float acaoI, float acaoD) 
 {                                                       // Função para apresentação de informaçcões sobre o Motor
   switch (op) {                                         // Verifica a opção escolhida
     case 1:                                             // Se foi escolhida a opção 1,
@@ -167,7 +167,15 @@ void mostraDadosMotor(int op, float theta, float omega, int sp, float erro, floa
     Serial.print("\t");                                 // Imprime uma tabulação
     Serial.print("\t");                                 // Imprime uma tabulação
     Serial.print("Controle: ");                         // Imprime mensagem ...
-    Serial.println(controle);                           // Imprime o sinal de controle
+    Serial.print(controle);                           // Imprime o sinal de controle
+    Serial.print("\t");                                 // Imprime uma tabulação
+    Serial.print("AcaoP: ");                         // Imprime mensagem ...
+    Serial.print(acaoP);                           // Imprime o sinal de controle
+    Serial.print("\t");                                 // Imprime uma tabulação
+    Serial.print("AcaoI: ");                         // Imprime mensagem ...
+    Serial.print(acaoI);                           // Imprime o sinal de controle
+    Serial.print("\t AcaoD: ");
+    Serial.println(acaoD);
     break;
    }
 }

@@ -1,0 +1,25 @@
+FALTA FAZER:
+*PARA O KD COLOCAR VALORES BEM PEQUENOS*
+Controle PID:
+-> Valores para testar o PID:
+Kp = 0,6, Ki = 0,001 e Kd =
+Kp = 0,6, Ki = 0.001 e Kd =
+Kp = 0,8, Ki = 0.005 e Kd =
+Kp = 0,8, Ki = 0.005 e Kd = 
+
+Controle PD:
+-> valores para testar o PD:
+Kp = 0,6 e Kd =
+Kp = 0,6 e Kd =
+Kp = 0,8 e Kd =
+Kp = 0,8 e Kd =
+
+Controle com filtros
+
+
+DIVISAO DE ESCRITA:
+-> INTRODUÇÃO: Samuel, Jorge
+-> REFERENCIAL TEÓRICO: Luiz
+-> METODOLOGIA: Paiva, Samuel, Luiz
+-> RESULTADOS: Paiva, Samuel
+-> CONCLUSÃO: Samuel

@@ -34,9 +34,9 @@ volatile long pulsosCanalA = 0;                 // Contador de pulsos TOTAIS do 
 volatile long pulsosPorPeriodo = 0;             // Contador de pulsos POR PERÍODO do Canal A do Encoder 
 volatile static unsigned long ultimoTempo = 0;  // Variável usada para testar se o período foi atingido
 float pulsosPorPeriodoAux = 0;
-//unsigned long tempoExibeDados1 = 0;
-//unsigned long tempoFazCalculo1 = 0;
-//unsigned long tempoFazCalculo2 = 0;
+unsigned long tempoExibeDados1 = 0;
+unsigned long tempoFazCalculo1 = 0;
+unsigned long tempoFazCalculo2 = 0;
 
 void setup(){ 
   Serial.begin(9600);                           // initializa a comunicação com Monitor serial
@@ -56,17 +56,17 @@ void loop() {
   if (tempo-ultimoTempo>=periodo || ultimoTempo==0) {   // SE já se passou pelo menos um "período"
     ultimoTempo = tempo;                                // ENTÃO: atualiza a variável "ultimoTempo"
     detachInterrupt(digitalPinToInterrupt(canalAPin));  // para evitar interferências
-    //tempoFazCalculo1 = millis();
+    tempoFazCalculo1 = micros();
     float theta = pulsosCanalA / pulsosPorVolta * 360;  // Calcula a posição angular (Theta) em graus
     float omega = ((pulsosPorPeriodo / pulsosPorVolta) * (60000 / periodo)); // Calcula a velocidade angular
-    pulsosPorPeriodoAux += pulsosPorPeriodo;
+    pulsosPorPeriodoAux = pulsosCanalA;
     pulsosPorPeriodo = 0;                               // Reinicializa o número de pulsos por período
-    //tempoFazCalculo2 = millis();
+    tempoFazCalculo2 = micros();
     //tempoFazCalculo2 = tempoFazCalculo2 - tempoFazCalculo1;
     attachInterrupt(digitalPinToInterrupt(canalAPin), atualizaEncoderA, FALLING); // Reabilita interrupção
-    //tempoExibeDados1 = millis();
+    tempoExibeDados1 = millis();
     mostraDadosMotor(5, theta, omega, PWM, valPot, pulsosPorPeriodoAux);                  // Chama função para exibição dos dados calculados
-    //tempoExibeDados1 = millis() - tempoExibeDados1;
+    tempoExibeDados1 = millis() - tempoExibeDados1;
   }
   if (vel >= 0) {                                       // SE a variável 'vel' for maior ou igual a 0
     digitalWrite(in1PtHPin, LOW);                       // ENTÃO envia um nivel ALTO para a entrada 1,
@@ -76,12 +76,13 @@ void loop() {
     digitalWrite(in2PtHPin, LOW); }                     // Envia um nivel ALTO para a entrada 2,
     analogWrite(enablePtHPin, PWM);                       // e envia o valor de PWM para o enable da Ponte H 
 
-  /*Serial.print("Tempo de calculo: ");
-  Serial.print((float)tempoFazCalculo1/1000);
-  Serial.print("\t | \t");
-  Serial.print((float)tempoFazCalculo2/1000);
-  Serial.print("\t | \t Tempo de exibir os dados: ");
-  Serial.println((float)tempoExibeDados1/1000, 4);*/
+  Serial.print("\t Tempo de calculo1: ");
+  Serial.print((float)tempoFazCalculo1/1000000, 20);
+  Serial.print(" \t");
+  Serial.print("Tempo de calculo2: ");
+  Serial.print((float)tempoFazCalculo2/1000000, 20);
+  Serial.print(" \t Tempo de exibir os dados: ");
+  Serial.println((float)tempoExibeDados1/1000, 4);
 }
 
 void atualizaEncoderA() {                               // ISR para contar os pulsos do encoder(Canal A)
@@ -136,11 +137,11 @@ void mostraDadosMotor(int op,float theta,float omega, float PWM, int valPot, flo
     Serial.print("\t");
     Serial.print("PWM: ");
     Serial.print(PWM);
-    Serial.print("\t Pulsos totais: ");
+    Serial.print("\t Pulsos por periodo: ");
     Serial.print(pulsosPorPeriodo);
     Serial.print("\t");
     Serial.print("Res: ");
-    Serial.println(valPot);
+    Serial.print(valPot);
   default:
     break;
   }
