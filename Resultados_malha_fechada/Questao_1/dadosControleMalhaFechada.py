@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 # Lê um arquivo .CSV e o transforma em um DataFrame
 #pd.options.display.max_rows = 9999 
 
-dados = pd.read_csv('Teste_p/Kp7.csv')
+dados = pd.read_csv('EGM0019_CISM/Resultados_malha_fechada/Questao_1/Teste_P/Kp7.csv')
 
 plt.figure(figsize = ((12, 6)))
 plt.subplot(1, 2, 1)

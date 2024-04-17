@@ -1,5 +1,5 @@
-#define Qtd_Amostras 10    // ***Quantas Amostras o filtro terá para filtrar, mude para testar outros filtros***
-#define Intervalo_Amostragem 100 // ***definindo o intervalo de amostragem em ms. Mude para testar novos filtros***
+#define Qtd_Amostras 100    // ***Quantas Amostras o filtro terá para filtrar, mude para testar outros filtros***
+#define Intervalo_Amostragem 1 // ***definindo o intervalo de amostragem em ms. Mude para testar novos filtros***
 int Leitura_analogica = 0; // Variável global que salva o dado bruto lido da porta serial.
 // A estratégia usada aqui é porque o comando analogRead possui um custo alto para o Arduino.
 // Com isso salvamos na variável para essa leitura ser feita apenas uma vez a cada interação de loop. 
